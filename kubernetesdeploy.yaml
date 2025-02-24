@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcareapp-deploy
+  labels:
+    app: healthcareapp-app  # Ensure this label is the same as in the Service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: healthcareapp-app  # This selector should match the label in your Service
+  template:
+    metadata:
+      labels:
+        app: healthcareapp-app  # Ensure this label is the same as in the Service
+    spec:
+      containers:
+      - name: healthcareapp-container
+        image: devsaikiran24/healthcareapp:latest  # Correct image name here
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthcareapp-np-service
+  labels:
+    app: healthcareapp-app  # Ensure this label matches the one in your Deployment
+spec:
+  selector:
+    app: healthcareapp-app  # Selector should match the app label from your 
+
+  type: NodePort
+  ports:
+  - nodePort: 31031 
+    port: 8082
+    targetPort: 8082
+
+    targetPort: 8082
